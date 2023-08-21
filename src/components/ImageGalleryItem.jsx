@@ -1,70 +1,60 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from './Modal';
 
-export class ImageGalleryItem extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isModalOpen: false,
-    };
-  }
+export const ImageGalleryItem = ({
+  id,
+  webformatURL,
+  largeImageURL,
+  tags,
+  key,
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  handleClick = event => {
+  const handleClick = event => {
     event.preventDefault();
-    this.openModal();
+    openModal();
   };
 
-  openModal = () => {
-    this.setState({ isModalOpen: true });
+  const openModal = () => {
+    setIsModalOpen(true);
     document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', this.handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
   };
 
-  closeModal = () => {
-    this.setState({ isModalOpen: false });
+  const closeModal = () => {
+    setIsModalOpen(false);
     document.body.style.overflow = '';
-    document.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('keydown', handleKeyDown);
   };
 
-  handleKeyDown = event => {
+  const handleKeyDown = event => {
     if (event.code === 'Escape') {
-      this.closeModal();
+      closeModal();
     }
   };
-
-  // overlayClickHandler = event => {
-  //   if (event.target === event.currentTarget) {
-  //     this.closeModal();
-  //   }
-  // };
-
-  render() {
-    const { id, webformatURL, largeImageURL, tags } = this.props;
-    const { isModalOpen } = this.state;
-
-    return (
-      <a href="./index.html" className="opener" onClick={this.handleClick}>
-        <li key={id}>
-          <img src={webformatURL} alt={tags} />
-        </li>
-        {isModalOpen && (
-          <Modal largeImageURL={largeImageURL} tags={tags}></Modal>
-          // <div className="backdrop" onClick={this.overlayClickHandler}>
-          //   <div className="overlay">
-          //     <div className="modal">
-          //       <img src={largeImageURL} alt={tags} />
-          //     </div>
-          //   </div>
-          // </div>
-        )}
-      </a>
-    );
-  }
-}
+  return (
+    <a href="./index.html" className="opener" onClick={handleClick}>
+      <li key={key}>
+        <img src={webformatURL} alt={tags} />
+      </li>
+      {isModalOpen && (
+        <Modal largeImageURL={largeImageURL} tags={tags}></Modal>
+        // <div className="backdrop" onClick={this.overlayClickHandler}>
+        //   <div className="overlay">
+        //     <div className="modal">
+        //       <img src={largeImageURL} alt={tags} />
+        //     </div>
+        //   </div>
+        // </div>
+      )}
+    </a>
+  );
+};
 
 ImageGalleryItem.propTypes = {
   id: PropTypes.number,
+  key: PropTypes.number,
   webformatURL: PropTypes.string,
   largeImageURL: PropTypes.string,
   tags: PropTypes.string,
