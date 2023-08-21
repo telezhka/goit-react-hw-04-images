@@ -73,7 +73,7 @@ export const App = () => {
       }
     }
     pageAsy();
-  }, [page]);
+  }, [page, inputValue]);
   // async componentDidUpdate(prevProps, prevState) {
   //   if (prevState.inputValue !== this.state.inputValue) {
   //     // this.setState({ isLoading: true });
