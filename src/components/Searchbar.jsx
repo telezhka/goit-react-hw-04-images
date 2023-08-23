@@ -13,6 +13,7 @@ export const SearchForm = ({ onFormSubmit }) => {
     evt.preventDefault();
     console.log(`Search query: ${inputValue}`);
     onFormSubmit(inputValue);
+    setInputValue('');
   };
   return (
     <header

@@ -15,5 +15,12 @@ export const ImageGallery = ({ pictures }) => (
   </ul>
 );
 ImageGallery.propTypes = {
-  pictures: PropTypes.array,
+  pictures: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ),
 };

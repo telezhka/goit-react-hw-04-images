@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from './Modal';
 
-export const ImageGalleryItem = ({
-  id,
-  webformatURL,
-  largeImageURL,
-  tags,
-  key,
-}) => {
+export const ImageGalleryItem = ({ id, webformatURL, largeImageURL, tags }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClick = event => {
@@ -35,7 +29,7 @@ export const ImageGalleryItem = ({
   };
   return (
     <a href="./index.html" className="opener" onClick={handleClick}>
-      <li key={key}>
+      <li key={id}>
         <img src={webformatURL} alt={tags} />
       </li>
       {isModalOpen && (
@@ -54,7 +48,7 @@ export const ImageGalleryItem = ({
 
 ImageGalleryItem.propTypes = {
   id: PropTypes.number,
-  key: PropTypes.number,
+  // key: PropTypes.number,
   webformatURL: PropTypes.string,
   largeImageURL: PropTypes.string,
   tags: PropTypes.string,

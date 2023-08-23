@@ -13,43 +13,57 @@ export const App = () => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
 
+  // useEffect(() => {
+  //   const savedInputValue = localStorage.getItem('inputValue');
+  //   if (savedInputValue) {
+  //     setInputValue(savedInputValue);
+  //   }
+  // }, []);
+
   const handleSubmit = submittedValue => {
     console.log('Значення, передане з дитячого компонента:', submittedValue);
     setInputValue(submittedValue);
+    setPage(1);
+    setPictures([]);
+    // localStorage.setItem('inputValue', submittedValue);
   };
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   async function isLoadingAsy() {
+  //     try {
+  //       const response = await axios.get(
+  //         `?q=${inputValue}&page=1&key=37812301-bb78e35e415e6149d67a423b2&image_type=photo&orientation=horizontal&per_page=12`
+  //       );
+  //       setPictures(response.data.hits);
+  //       setTotal(response.data.totalHits);
+  //       setIsLoading(false);
+  //       console.log(response);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //       setIsLoading(false);
+  //     }
+  //   }
+  //   isLoadingAsy();
+  // }, [inputValue]);
+
   useEffect(() => {
-    setIsLoading(true);
-    async function isLoadingAsy() {
-      try {
-        const response = await axios.get(
-          `?q=${inputValue}&page=1&key=37812301-bb78e35e415e6149d67a423b2&image_type=photo&orientation=horizontal&per_page=12`
-        );
-        setPictures(response.data.hits);
-        setTotal(response.data.totalHits);
-        setIsLoading(false);
-        console.log(response);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setIsLoading(false);
+    if (inputValue) {
+      setIsLoading(true);
+      async function pageAsy() {
+        try {
+          const response = await axios.get(
+            `?q=${inputValue}&page=${page}&key=37812301-bb78e35e415e6149d67a423b2&image_type=photo&orientation=horizontal&per_page=12`
+          );
+          setPictures(prevPictures => [...prevPictures, ...response.data.hits]);
+          setTotal(response.data.totalHits);
+          setIsLoading(false);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setIsLoading(false);
+        }
       }
+      pageAsy();
     }
-    isLoadingAsy();
-  }, [inputValue]);
-  useEffect(() => {
-    setIsLoading(true);
-    async function pageAsy() {
-      try {
-        const response = await axios.get(
-          `?q=${inputValue}&page=${page}&key=37812301-bb78e35e415e6149d67a423b2&image_type=photo&orientation=horizontal&per_page=12`
-        );
-        setPictures(prevPictures => [...prevPictures, ...response.data.hits]);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setIsLoading(false);
-      }
-    }
-    pageAsy();
   }, [page, inputValue]);
   const loadMoreImages = () => {
     setPage(prevPage => prevPage + 1);
